@@ -77,9 +77,17 @@ drop_list = [
     'VCCA', 'MaxCH', 'MaxCD', 'MaxCA',
     'AvgCH', 'AvgCD', 'AvgCA', 'B365C>2.5', 'B365C<2.5', 'PC>2.5',
     'PC<2.5', 'MaxC>2.5', 'MaxC<2.5', 'AvgC>2.5', 'AvgC<2.5', 'AHCh', 'B365CAHH',
-    'B365CAHA', 'PCAHH', 'PCAHA', 'MaxCAHH', 'MaxCAHA', 'AvgCAHH', 'AvgCAHA'
+    'B365CAHA', 'PCAHH', 'PCAHA', 'MaxCAHH', 'MaxCAHA', 'AvgCAHH', 'AvgCAHA',
+    'ref_referee', 'ref_match_report', 'Notes', 'ref_date', 'ref_time', 'ref_score',
+    'ref_venue','ref_day', 'ref_wk', 'ref_attendance',
+    'HTHG','HTAG', 'HTR', 'Referee'
 
 ]
+
+result_dict = {
+    ''
+}
+
 rename_merge_csv_files(drop_list)
 
 # df = get_csv('final_data/final_csv_0.csv')
