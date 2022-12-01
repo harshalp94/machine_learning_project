@@ -49,6 +49,7 @@ def rename_merge_csv_files(drop_list_col):
         co_data = get_csv(f'fb_co_data_{i}.csv')
         co_data = co_data.replace({'HomeTeam': team_name_dict})
         co_data = co_data.replace({'AwayTeam': team_name_dict})
+        co_data = co_data.replace({'FTR': result_dict})
         co_data.drop(columns='Unnamed: 0', axis=1, inplace=True)
         final_df = join_csv(co_data, ref_data)
         print(final_df.columns)
@@ -85,7 +86,9 @@ drop_list = [
 ]
 
 result_dict = {
-    ''
+    'H': 1,
+    'A': -1,
+    'D': 0
 }
 
 rename_merge_csv_files(drop_list)
