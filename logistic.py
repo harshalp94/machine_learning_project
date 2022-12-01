@@ -3,69 +3,116 @@ from operator import add
 import numpy as np
 import pickle
 
-df = pd.read_csv('data_20.csv',skipinitialspace=True)
-team_stat={}
-team_stat_away={}
-team_stat_count={}
-team_stat_away_count={}
+df22 = pd.read_csv('data_22.csv',skipinitialspace=True,usecols=['HomeTeam','AwayTeam','FTHG','FTAG','HS','AS','HST','AST','HC','AC','HR','AR','FTR','B365H','B365D','B365A','BWH','BWD','BWA','IWH','IWD','IWA'])
+df21 = pd.read_csv('data_21.csv',skipinitialspace=True,usecols=['HomeTeam','AwayTeam','FTHG','FTAG','HS','AS','HST','AST','HC','AC','HR','AR','FTR','B365H','B365D','B365A','BWH','BWD','BWA','IWH','IWD','IWA'])
+df20 = pd.read_csv('data_20.csv',skipinitialspace=True,usecols=['HomeTeam','AwayTeam','FTHG','FTAG','HS','AS','HST','AST','HC','AC','HR','AR','FTR','B365H','B365D','B365A','BWH','BWD','BWA','IWH','IWD','IWA'])
+df19 = pd.read_csv('data_19.csv',skipinitialspace=True,usecols=['HomeTeam','AwayTeam','FTHG','FTAG','HS','AS','HST','AST','HC','AC','HR','AR','FTR','B365H','B365D','B365A','BWH','BWD','BWA','IWH','IWD','IWA'])
+df18 = pd.read_csv('data_18.csv',skipinitialspace=True,usecols=['HomeTeam','AwayTeam','FTHG','FTAG','HS','AS','HST','AST','HC','AC','HR','AR','FTR','B365H','B365D','B365A','BWH','BWD','BWA','IWH','IWD','IWA'])
+df17 = pd.read_csv('data_17.csv',skipinitialspace=True,usecols=['HomeTeam','AwayTeam','FTHG','FTAG','HS','AS','HST','AST','HC','AC','HR','AR','FTR','B365H','B365D','B365A','BWH','BWD','BWA','IWH','IWD','IWA'])
+df16 = pd.read_csv('data_16.csv',skipinitialspace=True,usecols=['HomeTeam','AwayTeam','FTHG','FTAG','HS','AS','HST','AST','HC','AC','HR','AR','FTR','B365H','B365D','B365A','BWH','BWD','BWA','IWH','IWD','IWA'])
+df15 = pd.read_csv('data_15.csv',skipinitialspace=True,usecols=['HomeTeam','AwayTeam','FTHG','FTAG','HS','AS','HST','AST','HC','AC','HR','AR','FTR','B365H','B365D','B365A','BWH','BWD','BWA','IWH','IWD','IWA'])
+df14 = pd.read_csv('data_14.csv',skipinitialspace=True,usecols=['HomeTeam','AwayTeam','FTHG','FTAG','HS','AS','HST','AST','HC','AC','HR','AR','FTR','B365H','B365D','B365A','BWH','BWD','BWA','IWH','IWD','IWA'])
+df13 = pd.read_csv('data_13.csv',skipinitialspace=True,usecols=['HomeTeam','AwayTeam','FTHG','FTAG','HS','AS','HST','AST','HC','AC','HR','AR','FTR','B365H','B365D','B365A','BWH','BWD','BWA','IWH','IWD','IWA'])
 
-for i in range(len(df.iloc[:,12])):
-    if (df.iloc[i,12] == "A"):
-        df.iloc[i,12] = -1
-    elif (df.iloc[i,12] == "H"):
-        df.iloc[i,12] = 1
-    else:
-        df.iloc[i,12] = 0
 
-for i in range(0,len(df)):
-    if(df.iloc[i,0] in team_stat):
-        team_stat[df.iloc[i,0]] = list(map(add, team_stat[df.iloc[i,0]], df.iloc[i,2:12]))
-        team_stat_count[df.iloc[i,0]] =  team_stat_count[df.iloc[i,0]]+1 
-    else:
-       team_stat[df.iloc[i,0]] =df.iloc[i,2:12]
-       team_stat_count[df.iloc[i,0]] = 1
+doclist = [df21,df20,df19,df18,df17,df16,df15,df14,df13]
 
-for i in range(0,len(df)):
-    if(df.iloc[i,1] in team_stat_away):
-        team_stat_away[df.iloc[i,1]] = list(map(add, team_stat_away[df.iloc[i,1]], df.iloc[i,2:12])) 
-        team_stat_away_count[df.iloc[i,1]] = team_stat_away_count[df.iloc[i,1]] + 1
-    else:
-       team_stat_away[df.iloc[i,1]] =df.iloc[i,2:12]
-       team_stat_away_count[df.iloc[i,1]] = 1
+team_stat_next={}
+team_stat_away_next={}
 
-final_stat={}
-for i in range(0,len(df)):
-    home_team = df.iloc[i,0]
-    away_team = df.iloc[i,1]
-    final_stat[home_team+"_"+away_team] = team_stat[home_team] + team_stat_away[away_team]
 
-print(team_stat['Arsenal'])
-print(team_stat_away['Chelsea'])
-print(final_stat['Arsenal_Chelsea'])
-df2 = pd.read_csv('data_21.csv',skipinitialspace=True,usecols=['HomeTeam','AwayTeam','FTR'])
-input=[]
-output=[]
-for i in range(0,len(df)):
-    key = df2.iloc[i,:].HomeTeam+"_"+df2.iloc[i,:].AwayTeam
-    if key in final_stat:
-        if (df2.iloc[i,:].FTR == "A"):
-            df2.iloc[i,:].FTR = -1
-        elif (df2.iloc[i,:].FTR == "H"):
-            df2.iloc[i,:].FTR = 1
+#print(df13.FTR)
+train_output=[]
+test_output=[]
+train_input=[]
+test_input=[]
+count=0
+
+for index in range(0,len(doclist)):
+    doclist[index] = doclist[index].replace(np.nan, 0)
+    final_away={}
+    final_home={}
+#home result
+    team_stat={}
+    team_stat_count={}
+    for i in range(len(doclist[index].FTR)):
+        if (doclist[index].FTR[i] == "A"):
+            doclist[index].FTR[i] = -1
+        elif (doclist[index].FTR[i] == "H"):
+            doclist[index].FTR[i] = 1
         else:
-            df2.iloc[i,:].FTR = 0
-        input.append(final_stat[key])
-        output.append(df2.iloc[i,:].FTR)
+            doclist[index].FTR[i] = 0
+    
+    for i in range(0,len(doclist[index])):
+        if(doclist[index].HomeTeam[i] in team_stat):
+            team_stat[doclist[index].HomeTeam[i]] = list(map(add, team_stat[doclist[index].HomeTeam[i]], doclist[index].iloc[i,2:]))
+            team_stat_count[doclist[index].HomeTeam[i]] =  team_stat_count[doclist[index].HomeTeam[i]]+1 
+        else:
+            team_stat[doclist[index].HomeTeam[i]] =doclist[index].iloc[i,2:]
+            team_stat_count[doclist[index].HomeTeam[i]] = 1
+    if (index != 0):
+        for key in team_stat:
+            if (key in team_stat_next):
+                final_home[key] =np.append( team_stat[key],team_stat_next[key][11:])
+    team_stat_next = team_stat
 
+#away result
+    team_stat_away={}
+    team_stat_away_count={}
+
+    
+    for i in range(0,len(doclist[index])):
+        if(doclist[index].AwayTeam[i] in team_stat_away):
+            team_stat_away[doclist[index].AwayTeam[i]] = list(map(add, team_stat_away[doclist[index].AwayTeam[i]], doclist[index].iloc[i,2:]))
+            team_stat_away_count[doclist[index].AwayTeam[i]] =  team_stat_away_count[doclist[index].AwayTeam[i]]+1 
+        else:
+            team_stat_away[doclist[index].AwayTeam[i]] =doclist[index].iloc[i,2:]
+            team_stat_away_count[doclist[index].AwayTeam[i]] = 1
+    if (index != 0):
+        for key in team_stat_away:
+            if (key in team_stat_away_next):
+                final_away[key] =np.append( team_stat_away[key],team_stat_away_next[key][11:])
+    team_stat_away_next = team_stat_away
+
+    final_stat={}
+
+    for i in range(0,len(doclist[index])):
+        home_team = doclist[index].HomeTeam[i]
+        away_team = doclist[index].AwayTeam[i]
+        try:
+            final_stat[home_team+"_"+away_team] = final_home[home_team] + final_away[away_team]
+        except:
+            continue
+    if(index!=0):
+        for i in range(0,len(doclist[index-1])):
+            
+            try:
+                key = doclist[index-1].HomeTeam[i]+"_"+doclist[index-1].AwayTeam[i]
+            except:
+                continue
+            if key in final_stat:
+                if(index == 1):
+                    count=count+1
+                    test_input.append(final_stat[key])
+                    test_output.append(doclist[index-1].FTR[i])
+                else:
+                    train_input.append(final_stat[key])
+                    train_output.append(doclist[index-1].FTR[i])
 
 
 from sklearn.linear_model import LogisticRegression
 model = LogisticRegression(penalty='l2',max_iter=100000,multi_class="multinomial")
-model.fit(input, output)
 
-#print(model.score(input,output))
+from sklearn.preprocessing import PolynomialFeatures
+poly = PolynomialFeatures(5,include_bias=False)
+train_input = poly.fit_transform(train_input)
+transformer = Normalizer(norm = 'max').fit(train_input)
+train_input = transformer.transform(train_input)
 
-filename = "my_model"
-with open(filename,'wb') as file:
-    pickle.dump(model,file)
+model.fit(train_input, train_output)
 
+test_input = poly.fit_transform(test_input)
+transformer = Normalizer(norm = 'max').fit(test_input)
+test_input = transformer.transform(test_input)
+
+import pdb; pdb.set_trace()
