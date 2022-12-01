@@ -102,16 +102,12 @@ for index in range(0,len(doclist)):
 
 from sklearn.linear_model import LogisticRegression
 model = LogisticRegression(penalty='l2',max_iter=100000,multi_class="multinomial")
-
-from sklearn.preprocessing import PolynomialFeatures
-poly = PolynomialFeatures(5,include_bias=False)
-train_input = poly.fit_transform(train_input)
+from sklearn.preprocessing import Normalizer
 transformer = Normalizer(norm = 'max').fit(train_input)
 train_input = transformer.transform(train_input)
 
 model.fit(train_input, train_output)
 
-test_input = poly.fit_transform(test_input)
 transformer = Normalizer(norm = 'max').fit(test_input)
 test_input = transformer.transform(test_input)
 
