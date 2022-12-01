@@ -2,11 +2,14 @@ import pandas as pd
 import os
 from team_names import team_name_dict
 
+
 def create_dir(dir_name):
     if not os.path.exists(dir_name):
         os.mkdirs(dir_name)
 
+
 create_dir('final_data')
+
 
 def get_csv(csv_name):
     df = pd.read_csv(csv_name)
@@ -60,6 +63,9 @@ def rename_merge_csv_files(drop_list_col):
 def normalize_team_name():
     return ''
 
+
+'LBH', 'LBD', 'LBA', 'Bb1X2', 'BbMxH', 'BbAvH', 'BbMxD', 'BbAvD', 'BbMxA', 'BbAvA', 'BbOU', 'BbMx>2.5', 'BbAv>2.5', 'BbMx<2.5',
+'BbAv<2.5', 'BbAH', 'BbAHh', 'BbMxAHH', 'BbAvAHH', 'BbMxAHA', 'BbAvAHA'
 drop_list = [
     'Div',
     'BWH',
@@ -80,8 +86,10 @@ drop_list = [
     'PC<2.5', 'MaxC>2.5', 'MaxC<2.5', 'AvgC>2.5', 'AvgC<2.5', 'AHCh', 'B365CAHH',
     'B365CAHA', 'PCAHH', 'PCAHA', 'MaxCAHH', 'MaxCAHA', 'AvgCAHH', 'AvgCAHA',
     'ref_referee', 'ref_match_report', 'Notes', 'ref_date', 'ref_time', 'ref_score',
-    'ref_venue','ref_day', 'ref_wk', 'ref_attendance',
-    'HTHG','HTAG', 'HTR', 'Referee'
+    'ref_venue', 'ref_day', 'ref_wk', 'ref_attendance',
+    'HTHG', 'HTAG', 'HTR', 'Referee', 'LBH', 'LBD', 'LBA', 'Bb1X2',
+    'BbMxH', 'BbAvH', 'BbMxD', 'BbAvD', 'BbMxA', 'BbAvA', 'BbOU', 'BbMx>2.5', 'BbAv>2.5', 'BbMx<2.5',
+    'BbAv<2.5', 'BbAH', 'BbAHh', 'BbMxAHH', 'BbAvAHH', 'BbMxAHA', 'BbAvAHA'
 
 ]
 
@@ -95,5 +103,3 @@ rename_merge_csv_files(drop_list)
 
 # df = get_csv('final_data/final_csv_0.csv')
 # print(df.to_string())
-
-
