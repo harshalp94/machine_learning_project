@@ -1,5 +1,12 @@
 import pandas as pd
+import os
+from team_names import team_name_dict
 
+def create_dir(dir_name):
+    if not os.path.exists(dir_name):
+        os.mkdirs(dir_name)
+
+create_dir('final_data')
 
 def get_csv(csv_name):
     df = pd.read_csv(csv_name)
@@ -32,19 +39,25 @@ column_dict_ref = {
 
 def rename_merge_csv_files(drop_list_col):
     for i in range(0, 7):
-        ref_data = get_csv(f'data/fb_ref_fb_ref_data_{i}.csv')
+        ref_data = get_csv(f'fb_ref_data_{i}.csv')
         ref_data.rename(columns=column_dict_ref, inplace=True)
+        ref_data = ref_data.replace({'HomeTeam': team_name_dict})
+        ref_data = ref_data.replace({'AwayTeam': team_name_dict})
         # print(ref_data.columns)
         ref_data.drop(columns='Unnamed: 0', axis=1, inplace=True)
         # print(ref_data.columns)
-        co_data = get_csv(f'data/fb_co_fb_co_data_{i}.csv')
+        co_data = get_csv(f'fb_co_data_{i}.csv')
+        co_data = co_data.replace({'HomeTeam': team_name_dict})
+        co_data = co_data.replace({'AwayTeam': team_name_dict})
         co_data.drop(columns='Unnamed: 0', axis=1, inplace=True)
         final_df = join_csv(co_data, ref_data)
         print(final_df.columns)
-        breakpoint()
-        final_df.drop(columns=drop_list_col, axis=1, inplace=True)
+        final_df.drop(columns=drop_list_col, axis=1, inplace=True, errors='ignore')
         final_df.to_csv(f'final_data/final_csv_{i}.csv')
 
+
+def normalize_team_name():
+    return ''
 
 drop_list = [
     'Div',
@@ -69,8 +82,7 @@ drop_list = [
 ]
 rename_merge_csv_files(drop_list)
 
-df = get_csv('final_data/final_csv_0.csv')
-# df.drop(colum, axis=1, inplace=True)
-print(df.to_string())
+# df = get_csv('final_data/final_csv_0.csv')
+# print(df.to_string())
 
-# print(get_csv('fb_co_fb_co_data_0.csv'))
+
