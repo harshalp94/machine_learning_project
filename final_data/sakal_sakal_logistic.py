@@ -43,18 +43,21 @@ for index in range(0,2):
     teams_all = teams_all.intersection(teams_previous3)
 
     for i in range(0,len(doclist[index])):
+        
         output_stat[doclist[index].HomeTeam[i]+"_"+doclist[index].AwayTeam[i]] =doclist[index].iloc[i,2:]
         
     for i in range(0,len(doclist[index+1])):
-        team_stat[doclist[index].HomeTeam[i]+"_"+doclist[index].AwayTeam[i]] =doclist[index].iloc[i,2:]
+        team_stat[doclist[index+1].HomeTeam[i]+"_"+doclist[index+1].AwayTeam[i]] =doclist[index+1].iloc[i,2:]
 
     for i in range(0,len(doclist[index+2])):
-        team_stat2[doclist[index].HomeTeam[i]+"_"+doclist[index].AwayTeam[i]] =doclist[index].iloc[i,2:]
+        team_stat2[doclist[index+2].HomeTeam[i]+"_"+doclist[index+2].AwayTeam[i]] =doclist[index+2].iloc[i,2:]
 
     for i in range(0,len(doclist[index+3])):
-        team_stat3[doclist[index].HomeTeam[i]+"_"+doclist[index].AwayTeam[i]] =doclist[index].iloc[i,2:]
+        team_stat3[doclist[index+3].HomeTeam[i]+"_"+doclist[index+3].AwayTeam[i]] =doclist[index+3].iloc[i,2:]
 
+    print("index:")
     for i in range(0,len(doclist[index])):
+
         if(doclist[index].HomeTeam[i] in teams_all and doclist[index].AwayTeam[i] in teams_all):
             key = doclist[index].HomeTeam[i]+'_'+doclist[index].AwayTeam[i]
             arr= np.append(team_stat[key],team_stat2[key])
@@ -70,5 +73,5 @@ for index in range(0,2):
 from sklearn.linear_model import LogisticRegression
 model = LogisticRegression(penalty='l2',max_iter=100000,multi_class="multinomial")
 
-model.fit(input, output)
 import pdb; pdb.set_trace()
+model.fit(input, output)
