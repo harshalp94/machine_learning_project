@@ -1,5 +1,6 @@
 
 import pandas as pd
+year_list = [2021, 2020, 2019, 2018, 2017, 2016, 2015]
 
 fb_ref_links = [
     'https://fbref.com/en/comps/9/2021-2022/schedule/2021-2022-Premier-League-Scores-and-Fixtures',
@@ -25,6 +26,7 @@ football_co_data = [
 
 def get_fb_data(url_list, csv_file_name, file_type):
     count = 0
+
     for url in url_list:
 
         count_name = count
@@ -32,11 +34,11 @@ def get_fb_data(url_list, csv_file_name, file_type):
             print(url)
             df = pd.read_html(url)[0]
             #df.drop(columns='Unnamed: 0', axis=1, inplace=True)
-            df.to_csv(f'{csv_file_name}_{count_name}.csv')
+            df.to_csv(f'{csv_file_name}_{year_list[count_name]}.csv')
         else:
             df = pd.read_csv(url)
             #df.drop(columns='Unnamed: 0', axis=1, inplace=True)
-            df.to_csv(f'{csv_file_name}_{count_name}.csv')
+            df.to_csv(f'{csv_file_name}_{year_list[count_name]}.csv')
         count = count + 1
 
 
